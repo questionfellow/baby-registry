@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #f8fafc;
+  --accent: #4f46e5;
+  --accent-soft: #818cf8;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-gradient: linear-gradient(135deg, #fef2f2 0%, #f0f9ff 100%);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --glass-stroke: rgba(255, 255, 255, 0.4);
+  --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+@layer base {
+  body {
+    @apply antialiased text-slate-800 bg-fixed;
+    background-image: var(--bg-gradient);
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-md border rounded-2xl;
+    background-color: var(--card-bg);
+    border-color: var(--glass-stroke);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    @apply -translate-y-1;
+    box-shadow: var(--shadow-premium);
+  }
+
+  .btn-primary {
+    @apply px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-full 
+           hover:bg-indigo-700 active:scale-95 transition-all duration-200
+           shadow-sm hover:shadow-md disabled:bg-slate-300 disabled:cursor-not-allowed;
+  }
+
+  .progress-container {
+    @apply h-2 w-full bg-slate-100 rounded-full overflow-hidden;
+  }
+
+  .progress-bar {
+    @apply h-full bg-indigo-500 rounded-full transition-all duration-500 ease-out;
+  }
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
