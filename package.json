@@ -2,7 +2,7 @@
   "name": "baby-registry",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://karanpatel.github.io/baby-registry/",
+  "homepage": "https://questionfellow.github.io/baby-registry/",
   "type": "module",
   "scripts": {
     "dev": "vite",
