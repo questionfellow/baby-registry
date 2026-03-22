@@ -23,3 +23,28 @@ CREATE TABLE gifts (
   description TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Enable Row Level Security
+ALTER TABLE registries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gifts ENABLE ROW LEVEL SECURITY;
+
+-- Policies for registries
+CREATE POLICY "Allow public read access to registries" ON registries
+  FOR SELECT USING (true);
+
+-- Policies for gifts
+CREATE POLICY "Allow public read access to gifts" ON gifts
+  FOR SELECT USING (true);
+
+CREATE POLICY "Allow public update access to gifts" ON gifts
+  FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Function to handle blessings (append to JSONB array)
+CREATE OR REPLACE FUNCTION append_blessing(gift_id UUID, person_name TEXT)
+RETURNS void AS $$
+BEGIN
+  UPDATE gifts
+  SET gifted_by = COALESCE(gifted_by, '[]'::jsonb) || jsonb_build_array(person_name)
+  WHERE id = gift_id AND is_blessing = true;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
