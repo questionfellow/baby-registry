@@ -1,7 +1,7 @@
 import type { Gift, Registry } from '../types';
 
 export const mockRegistry: Registry = {
-    babyName: "Baby Gulmohar",
+    babyName: "Baby Smith",
     dueDate: "July 15, 2026",
     welcomeMessage: "Thank you for being part of our journey! We appreciate your love and support as we prepare for our little one's arrival.",
     shippingAddress: "123 Nursery Lane, Sweetwater, CA 90210",
