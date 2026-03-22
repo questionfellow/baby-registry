@@ -20,11 +20,16 @@ export const useRegistry = () => {
                     .select('*')
                     .single();
 
-                if (registryError && registryError.code !== 'PGRST116') {
-                    throw registryError;
+                if (registryError) {
+                    if (registryError.code === 'PGRST116') {
+                        console.warn('No registry found in Supabase. Falling back to mock data. Please ensure you have added a row to the "registries" table in your Supabase project.');
+                    } else {
+                        throw registryError;
+                    }
                 }
 
                 if (registryData) {
+                    console.info('Registry data loaded successfully from Supabase:', registryData.baby_name);
                     setRegistry({
                         babyName: registryData.baby_name,
                         dueDate: registryData.due_date,
@@ -84,28 +89,20 @@ export const useRegistry = () => {
             const gift = gifts.find(g => g.id === giftId);
             if (!gift) return false;
 
-            let updateData: any = {};
-
             if (gift.isBlessing) {
-                // For blessings, append the name to the list
-                const currentNames = gift.giftedBy || [];
-                updateData = {
-                    gifted_by: [...currentNames, name]
-                };
+                // Use atomic server-side append to avoid race conditions
+                const { error: rpcError } = await supabase
+                    .rpc('append_blessing', { gift_id: giftId, person_name: name });
+                if (rpcError) throw rpcError;
             } else {
                 // For normal gifts, mark as gifted and set the name
-                updateData = {
-                    is_gifted: true,
-                    gifted_by: [name]
-                };
+                const { error: updateError } = await supabase
+                    .from('gifts')
+                    .update({ is_gifted: true, gifted_by: [name] })
+                    .eq('id', giftId);
+                if (updateError) throw updateError;
             }
 
-            const { error: updateError } = await supabase
-                .from('gifts')
-                .update(updateData)
-                .eq('id', giftId);
-
-            if (updateError) throw updateError;
             return true;
         } catch (err: any) {
             console.error('Error marking as gifted:', err);
