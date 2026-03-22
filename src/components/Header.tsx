@@ -7,6 +7,21 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ registry }) => {
+    const formatDate = (dateString: string) => {
+        if (!dateString) return '';
+        try {
+            const date = new Date(dateString);
+            // Format to "21 Mar 2026"
+            return new Intl.DateTimeFormat('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            }).format(date);
+        } catch (e) {
+            return dateString;
+        }
+    };
+
     return (
         <header className="pt-16 pb-12 text-center animate-fade-in">
             <div className="flex justify-center mb-6">
@@ -19,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ registry }) => {
             </h1>
             <div className="flex items-center justify-center gap-2 text-indigo-600 font-medium mb-6">
                 <Calendar className="w-4 h-4" />
-                <span>Due Date: {registry.dueDate}</span>
+                <span>Date of Birth: {formatDate(registry.dueDate)}</span>
             </div>
 
             <p className="max-w-2xl mx-auto text-slate-600 text-lg leading-relaxed px-4 mb-10">
