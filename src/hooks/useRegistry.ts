@@ -47,6 +47,8 @@ export const useRegistry = () => {
 
                 if (giftsError) throw giftsError;
 
+                console.log('gifts sort_order values:', giftsData?.map(g => ({ title: g.title, sort_order: g.sort_order })));
+
                 if (giftsData && giftsData.length > 0) {
                     const formattedGifts: Gift[] = giftsData.map(g => ({
                         id: g.id,
