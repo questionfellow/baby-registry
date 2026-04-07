@@ -43,7 +43,6 @@ export const useRegistry = () => {
                 const { data: giftsData, error: giftsError } = await supabase
                     .from('gifts')
                     .select('*')
-                    .order('sort_order', { ascending: true, nullsFirst: false })
                     .order('created_at', { ascending: true });
 
                 if (giftsError) throw giftsError;
@@ -61,6 +60,12 @@ export const useRegistry = () => {
                         description: g.description,
                         sortOrder: g.sort_order ?? undefined
                     }));
+                    formattedGifts.sort((a, b) => {
+                        if (a.sortOrder == null && b.sortOrder == null) return 0;
+                        if (a.sortOrder == null) return 1;
+                        if (b.sortOrder == null) return -1;
+                        return a.sortOrder - b.sortOrder;
+                    });
                     setGifts(formattedGifts);
                 }
             } catch (err: any) {
