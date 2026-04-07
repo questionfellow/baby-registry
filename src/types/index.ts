@@ -8,6 +8,7 @@ export interface Gift {
     giftedBy?: string[]; // Changed to array for multiple signatures (Blessings)
     isBlessing?: boolean; // New field for non-monetary multi-person gift
     description?: string;
+    sortOrder?: number;
 }
 
 export interface Registry {

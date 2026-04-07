@@ -21,6 +21,7 @@ CREATE TABLE gifts (
   gifted_by JSONB DEFAULT '[]'::jsonb, -- Store list of names for Blessings
   is_blessing BOOLEAN NOT NULL DEFAULT FALSE, -- New field for blessings
   description TEXT,
+  sort_order INTEGER,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
