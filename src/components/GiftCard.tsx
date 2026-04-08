@@ -1,5 +1,5 @@
-import React from 'react';
-import { ExternalLink, CheckCircle, Gift as GiftIcon, User, Heart } from 'lucide-react';
+import React, { useState } from 'react';
+import { ExternalLink, CheckCircle, Gift as GiftIcon, User, Heart, X } from 'lucide-react';
 import type { Gift } from '../types';
 
 interface GiftCardProps {
@@ -9,8 +9,10 @@ interface GiftCardProps {
 
 export const GiftCard: React.FC<GiftCardProps> = ({ gift, onMarkAsGifted }) => {
     const isFullyGifted = gift.isGifted && !gift.isBlessing;
+    const [showBuyNowPopup, setShowBuyNowPopup] = useState(false);
 
     return (
+        <>
         <div className={`glass-card overflow-hidden h-full flex flex-col ${isFullyGifted ? 'opacity-80' : ''}`}>
             <div className="relative aspect-[4/3] overflow-hidden">
                 <img
@@ -69,15 +71,13 @@ export const GiftCard: React.FC<GiftCardProps> = ({ gift, onMarkAsGifted }) => {
 
                 <div className={`grid ${gift.isBlessing || !gift.productUrl ? 'grid-cols-1' : 'grid-cols-2'} gap-3`}>
                     {!gift.isBlessing && gift.productUrl && (
-                        <a
-                            href={gift.productUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <button
+                            onClick={() => !isFullyGifted && setShowBuyNowPopup(true)}
                             className={`btn-primary flex items-center justify-center gap-2 text-sm py-3 ${isFullyGifted ? 'bg-slate-200 text-slate-500 hover:bg-slate-200 border-none shadow-none pointer-events-none' : ''}`}
                         >
                             <ExternalLink className="w-4 h-4" />
                             <span>Buy Now</span>
-                        </a>
+                        </button>
                     )}
                     <button
                         onClick={() => onMarkAsGifted(gift)}
@@ -109,5 +109,39 @@ export const GiftCard: React.FC<GiftCardProps> = ({ gift, onMarkAsGifted }) => {
                 </div>
             </div>
         </div>
+
+            {showBuyNowPopup && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm" onClick={() => setShowBuyNowPopup(false)}>
+                    <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="bg-indigo-50 p-2 rounded-xl">
+                                <GiftIcon className="w-5 h-5 text-indigo-600" />
+                            </div>
+                            <button onClick={() => setShowBuyNowPopup(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <p className="text-slate-700 text-sm leading-relaxed mb-6">
+                            Please come back to this registry website and mark the item as gifted if you do end up gifting this item.
+                        </p>
+                        <div className="flex gap-3">
+                            <button onClick={() => setShowBuyNowPopup(false)} className="flex-1 px-4 py-2.5 rounded-full text-sm font-medium text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">
+                                Cancel
+                            </button>
+                            <a
+                                href={gift.productUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setShowBuyNowPopup(false)}
+                                className="flex-1 btn-primary flex items-center justify-center gap-2 text-sm py-2.5"
+                            >
+                                <ExternalLink className="w-4 h-4" />
+                                <span>Show website</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };

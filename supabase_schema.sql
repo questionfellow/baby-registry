@@ -6,6 +6,8 @@ CREATE TABLE registries (
   welcome_message TEXT,
   shipping_address TEXT,
   contact_details TEXT,
+  how_to_use TEXT,
+  upi_id TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -24,6 +26,10 @@ CREATE TABLE gifts (
   sort_order INTEGER,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Migration: if adding to existing table run:
+-- ALTER TABLE registries ADD COLUMN how_to_use TEXT;
+-- ALTER TABLE registries ADD COLUMN upi_id TEXT;
 
 -- Enable Row Level Security
 ALTER TABLE registries ENABLE ROW LEVEL SECURITY;

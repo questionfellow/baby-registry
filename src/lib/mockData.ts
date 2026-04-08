@@ -5,7 +5,9 @@ export const mockRegistry: Registry = {
     dueDate: "July 15, 2026",
     welcomeMessage: "Thank you for being part of our journey! We appreciate your love and support as we prepare for our little one's arrival.",
     shippingAddress: "123 Nursery Lane, Sweetwater, CA 90210",
-    contactDetails: "Phone: (555) 123-4567 | Email: parents@example.com"
+    contactDetails: "Phone: (555) 123-4567 | Email: parents@example.com",
+    howToUse: "Browse the items below and pick something you'd like to gift.\nClick \"Buy Now\" to purchase from the linked store, then come back here and mark it as gifted so others know it's been taken care of.",
+    upiId: "parents@upi"
 };
 
 export const mockGifts: Gift[] = [

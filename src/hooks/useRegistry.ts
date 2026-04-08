@@ -35,7 +35,9 @@ export const useRegistry = () => {
                         dueDate: registryData.due_date,
                         welcomeMessage: registryData.welcome_message,
                         shippingAddress: registryData.shipping_address,
-                        contactDetails: registryData.contact_details
+                        contactDetails: registryData.contact_details,
+                        howToUse: registryData.how_to_use ?? undefined,
+                        upiId: registryData.upi_id ?? undefined
                     });
                 }
 

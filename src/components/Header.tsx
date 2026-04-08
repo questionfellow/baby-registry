@@ -1,5 +1,5 @@
 import React from 'react';
-import { Baby, Calendar, MapPin, Phone } from 'lucide-react';
+import { Baby, Calendar, MapPin, Phone, BookOpen, Wallet } from 'lucide-react';
 import type { Registry } from '../types';
 
 interface HeaderProps {
@@ -37,9 +37,13 @@ export const Header: React.FC<HeaderProps> = ({ registry }) => {
                 <span>Date of Birth: {formatDate(registry.dueDate)}</span>
             </div>
 
-            <p className="max-w-2xl mx-auto text-slate-600 text-lg leading-relaxed px-4 mb-10">
-                {registry.welcomeMessage}
-            </p>
+            <div className="max-w-2xl mx-auto text-slate-600 text-lg leading-relaxed px-4 mb-10 text-center">
+                {registry.welcomeMessage.split(/\n\n|\n/).filter(p => p.trim()).map((para, i, arr) => (
+                    <p key={i} className={i < arr.length - 1 ? 'mb-4' : ''}>
+                        {para}
+                    </p>
+                ))}
+            </div>
 
             <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
                 <div className="glass-card p-4 flex items-start gap-4 text-left">
@@ -64,6 +68,32 @@ export const Header: React.FC<HeaderProps> = ({ registry }) => {
                         </p>
                     </div>
                 </div>
+                {registry.howToUse && (
+                    <div className="glass-card p-4 flex items-start gap-4 text-left">
+                        <div className="bg-violet-50 p-2 rounded-xl mt-1">
+                            <BookOpen className="w-5 h-5 text-violet-600" />
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-900 mb-1">How to Use the Registry</h4>
+                            <p className="text-sm text-slate-600 leading-snug whitespace-pre-line">
+                                {registry.howToUse}
+                            </p>
+                        </div>
+                    </div>
+                )}
+                {registry.upiId && (
+                    <div className="glass-card p-4 flex items-start gap-4 text-left">
+                        <div className="bg-amber-50 p-2 rounded-xl mt-1">
+                            <Wallet className="w-5 h-5 text-amber-600" />
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-900 mb-1">UPI ID</h4>
+                            <p className="text-sm text-slate-600 leading-snug font-mono">
+                                {registry.upiId}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </div>
         </header>
     );

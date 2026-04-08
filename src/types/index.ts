@@ -17,4 +17,6 @@ export interface Registry {
     welcomeMessage: string;
     shippingAddress: string;
     contactDetails: string;
+    howToUse?: string;
+    upiId?: string;
 }
