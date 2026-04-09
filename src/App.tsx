@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Header } from './components/Header';
 import { GiftCard } from './components/GiftCard';
 import { GiftModal } from './components/GiftModal';
+import { BuyNowModal } from './components/BuyNowModal';
 import { useRegistry } from './hooks/useRegistry';
 import type { Gift } from './types';
 import { AlertCircle, Loader2 } from 'lucide-react';
@@ -10,6 +11,7 @@ function App() {
   const { registry, gifts, loading, error, markAsGifted } = useRegistry();
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [buyNowGift, setBuyNowGift] = useState<Gift | null>(null);
 
   const handleOpenMarkAsGifted = (gift: Gift) => {
     setSelectedGift(gift);
@@ -70,6 +72,7 @@ function App() {
               <GiftCard
                 gift={gift}
                 onMarkAsGifted={handleOpenMarkAsGifted}
+                onBuyNow={setBuyNowGift}
               />
             </div>
           ))}
@@ -81,6 +84,12 @@ function App() {
           </div>
         )}
       </div>
+
+      <BuyNowModal
+        gift={buyNowGift}
+        isOpen={!!buyNowGift}
+        onClose={() => setBuyNowGift(null)}
+      />
 
       <GiftModal
         gift={selectedGift}
